@@ -90,7 +90,7 @@ class ProductController {
       if (!result) {
         return res.status(404).json(responseModel(false, 'Product not found'));
       }
-      res.status(204).json(responseModel(true, 'Product deleted successfully'));
+      res.status(200).json(responseModel(true, 'Product deleted successfully'));
     } catch (error) {
       next(error);
     }
