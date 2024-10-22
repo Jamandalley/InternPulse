@@ -102,7 +102,7 @@ curl -X POST https://internpulse-3.onrender.com/api/products/create-product \
   }'
 ```
 
-For detailed API documentation, please visit the [API Documentation](https://internpulse-3.onrender.com/api-docs](https://etechnosoft.gitbook.io/internpulse-product-management-api/)).
+For detailed API documentation, please visit the [API Documentation](https://etechnosoft.gitbook.io/internpulse-product-management-api/).
 
 ## 🧪 Running Tests
 ```bash
@@ -152,7 +152,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🛟 Support
 For support, please:
-1. Check the [API Documentation](https://internpulse-3.onrender.com/api-docs](https://etechnosoft.gitbook.io/internpulse-product-management-api/))
+1. Check the [API Documentation](https://etechnosoft.gitbook.io/internpulse-product-management-api/)
 2. Open an issue
 3. Contact the maintainers
 
