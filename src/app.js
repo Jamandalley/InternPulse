@@ -20,6 +20,8 @@ app.get('/', (req, res) => {
 });
 
 // Only start the server if we're not in Vercel
+const PORT = process.env.PORT || 3000;
+
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
