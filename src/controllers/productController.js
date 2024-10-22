@@ -6,8 +6,12 @@ class ProductController {
         try {
             const productData = req.body;
             const name = req.body.name;
+            const price = req.body.price;
             if (!name) {
                 return res.status(400).json(responseModel(false, 'Product name is required'));
+            }
+            if (price < 0){
+              return res.status(400).json(responseModel(false, 'Product price must be a positive number'));
             }
             const product = await ProductService.createProduct(productData);
             res.status(201).json(responseModel(true, 'Product created successfully', [product]));
@@ -106,7 +110,7 @@ class ProductController {
       if (!result) {
         return res.status(404).json(responseModel(false, 'Product not found'));
       }
-      res.status(204).json(responseModel(true, 'Product deleted successfully'));
+      res.status(200).json(responseModel(true, 'Product deleted successfully'));
     } catch (error) {
       next(error);
     }
