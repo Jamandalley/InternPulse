@@ -1,28 +1,50 @@
 # Product Management API
 
-A RESTful API built with Node.js, Express, and SQLite for managing product information. This API provides endpoints for creating, reading, updating, and deleting products through both ID and name-based operations.
+A RESTful API for managing product information, built with Node.js, Express, and SQLite.
 
-## Features
+[![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://internpulse-3.onrender.com)
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-- Create new products
-- Retrieve products by ID or name
-- Update products by ID or name
-- Delete products by ID or name
+## 📖 Table of Contents
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Configuration](#configuration)
+- [API Documentation](#api-documentation)
+- [Running Tests](#running-tests)
+- [Deployment](#deployment)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
+
+## ✨ Features
+- Create, read, update, and delete products
+- Search products by ID or name
+- Consistent error handling
 - SQLite database for data persistence
-- Comprehensive error handling
-- Full test coverage
-- Detailed API documentation
+- Comprehensive test suite
+- Production-ready configuration
 
-## Prerequisites
+## 🛠️ Tech Stack
+- Node.js
+- Express.js
+- SQLite3
+- Jest (Testing)
+- Supertest (API Testing)
 
-- Node.js (v14.0.0 or higher)
-- npm (v6.0.0 or higher)
+## 🚀 Getting Started
 
-## Installation
+### Prerequisites
+- Node.js (v14 or higher)
+- npm (v6 or higher)
 
+### Installation
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/product-management-api.git
+git clone [repository-url]
 cd product-management-api
 ```
 
@@ -31,174 +53,156 @@ cd product-management-api
 npm install
 ```
 
-3. Initialize the database:
+3. Set up the database:
 ```bash
 npm run migrate
 ```
 
-## Running the Application
-
-Start the server:
+4. Start the server:
 ```bash
 npm start
 ```
 
-The API will be available at `http://localhost:3000/api/products`
+The API will be available at `http://localhost:3000`
 
-## Testing
+## ⚙️ Configuration
+The application uses the following environment variables:
+- `PORT`: Server port (default: 3000)
+- `NODE_ENV`: Application environment (development/production/test)
 
-Run the test suite:
-```bash
-npm test
+## 📚 API Documentation
+
+### Base URL
+```
+https://internpulse-3.onrender.com
 ```
 
-## Project Structure
+### Endpoints
 
-```
-product-management-api/
-├── src/
-│   ├── app.js                 # Express app configuration
-│   ├── database/
-│   │   ├── db.js             # Database connection
-│   │   └── migrate.js        # Database migrations
-│   ├── controllers/
-│   │   └── productController.js
-│   ├── services/
-│   │   └── productService.js
-│   ├── routes/
-│   │   └── productRoutes.js
-│   ├── middleware/
-│   │   └── errorHandler.js
-│   └── __tests__/
-│       └── product.test.js
-├── package.json
-└── README.md
-```
-
-## API Endpoints
-
-### Products
-
+#### Products
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/products` | Create a new product |
+| POST | `/api/products/create-product` | Create a new product |
+| GET | `/api/products/all-products` | Get all products |
 | GET | `/api/products/id/:id` | Get product by ID |
-| GET | `/api/products?name=productName` | Get product by name |
-| PUT | `/api/products/id/:id` | Update product by ID |
-| PUT | `/api/products?oldName=productName` | Update product by name |
-| DELETE | `/api/products/id/:id` | Delete product by ID |
-| DELETE | `/api/products?name=productName` | Delete product by name |
+| GET | `/api/products/name` | Get product by name |
+| PUT | `/api/products/update/:id` | Update product by ID |
+| PUT | `/api/products/update` | Update product by name |
+| DELETE | `/api/products/delete/:id` | Delete product by ID |
+| DELETE | `/api/products/delete` | Delete product by name |
 
-## Example Usage
-
-### Create a Product
-
+### Example Request
 ```bash
-curl -X POST http://localhost:3000/api/products \
+curl -X POST https://internpulse-3.onrender.com/api/products/create-product \
   -H "Content-Type: application/json" \
-  -d '{"name": "Test Product"}'
+  -d '{
+    "name": "Example Product",
+    "price": 99.99,
+    "description": "Product description"
+  }'
 ```
 
-Response:
-```json
-{
-  "id": 1,
-  "name": "Test Product"
-}
-```
+For detailed API documentation, please visit the [API Documentation](https://internpulse-3.onrender.com/api-docs).
 
-### Get Product by ID
-
+## 🧪 Running Tests
 ```bash
-curl http://localhost:3000/api/products/id/1
-```
-
-Response:
-```json
-{
-  "id": 1,
-  "name": "Test Product",
-  "created_at": "2024-10-21T10:00:00.000Z"
-}
-```
-
-### Update Product
-
-```bash
-curl -X PUT http://localhost:3000/api/products/id/1 \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Updated Product"}'
-```
-
-Response:
-```json
-{
-  "id": 1,
-  "name": "Updated Product"
-}
-```
-
-## Error Handling
-
-The API implements comprehensive error handling:
-
-- 400 Bad Request: Invalid input data or missing required fields
-- 404 Not Found: Requested resource doesn't exist
-- 500 Internal Server Error: Server-side errors
-
-Example error response:
-```json
-{
-  "error": "Product not found"
-}
-```
-
-## Database Schema
-
-```sql
-CREATE TABLE products (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL UNIQUE,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-)
-```
-
-## Development
-
-### Running Tests
-
-The project includes a comprehensive test suite using Jest:
-
-```bash
-# Run tests
+# Run all tests
 npm test
 
 # Run tests with coverage
 npm test -- --coverage
 ```
 
-### Adding New Features
+## 📦 Deployment
+The API is deployed on [Render](https://render.com). To deploy your own instance:
 
-1. Create new tests in `src/__tests__/`
-2. Implement the feature
-3. Ensure all tests pass
-4. Update documentation if needed
+1. Create a new Web Service on Render
+2. Connect your repository
+3. Configure the following:
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+   - Environment Variables (if any)
 
-## Contributing
+## 📁 Project Structure
+```
+product-management-api/
+├── src/
+│   ├── app.js              # Application entry point
+│   ├── routes/             # Route definitions
+│   ├── controllers/        # Route controllers
+│   ├── services/          # Business logic
+│   ├── database/          # Database configuration
+│   └── middleware/        # Custom middleware
+├── tests/                 # Test files
+├── package.json          # Project dependencies
+├── README.md            # Project documentation
+└── .gitignore          # Git ignore file
+```
 
+## 🤝 Contributing
 1. Fork the repository
-2. Create a new branch
+2. Create a new branch (`git checkout -b feature/feature-name`)
 3. Make your changes
-4. Submit a pull request
+4. Commit your changes (`git commit -am 'Add new feature'`)
+5. Push to the branch (`git push origin feature/feature-name`)
+6. Create a Pull Request
 
-## License
+## 📝 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-MIT
+## 🛟 Support
+For support, please:
+1. Check the [API Documentation](https://internpulse-3.onrender.com/api-docs)
+2. Open an issue
+3. Contact the maintainers
 
-## Author
+## ✅ Requirements
+- Node.js 14.x or higher
+- npm 6.x or higher
+- SQLite 3.x
 
-[Your Name]
+## 🔍 Common Issues and Solutions
 
-## Support
+### API returns 500 error
+- Check if the database is properly migrated
+- Verify all required environment variables are set
+- Check server logs for detailed error messages
 
-For support, please open an issue in the GitHub repository or contact [your email].
+### Database migration fails
+```bash
+# Reset the database
+rm src/database/database.sqlite
+npm run migrate
+```
+
+### Port already in use
+```bash
+# Kill the process using the port
+lsof -i :3000
+kill -9 <PID>
+```
+
+## 📊 Status Codes
+- 200: Success
+- 201: Created
+- 204: No Content
+- 400: Bad Request
+- 404: Not Found
+- 500: Server Error
+
+## 🔐 Security Considerations
+- The API currently doesn't implement authentication
+- Use HTTPS in production
+- Implement rate limiting for production use
+- Consider adding input validation middleware
+- Implement proper CORS policies
+
+## 🎯 Future Improvements
+- [ ] Add authentication/authorization
+- [ ] Implement rate limiting
+- [ ] Add pagination for large datasets
+- [ ] Add caching layer
+- [ ] Implement logging system
+- [ ] Add data validation middleware
+- [ ] Add API versioning
+- [ ] Implement Swagger documentation
