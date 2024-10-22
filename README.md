@@ -102,7 +102,7 @@ curl -X POST https://internpulse-3.onrender.com/api/products/create-product \
   }'
 ```
 
-For detailed API documentation, please visit the [API Documentation](https://internpulse-3.onrender.com/api-docs).
+For detailed API documentation, please visit the [API Documentation]([https://internpulse-3.onrender.com/api-docs](https://etechnosoft.gitbook.io/internpulse-product-management-api/)).
 
 ## 🧪 Running Tests
 ```bash
