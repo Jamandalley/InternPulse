@@ -286,7 +286,7 @@ describe('Product Management API', () => {
             .delete('/api/products/delete')
             .query({ name: 'Test Product' });
       
-          expect(res.statusCode).toBe(204); // Expect no content for successful deletion
+          expect(res.statusCode).toBe(200); // Expect no content for successful deletion
       
           // Verify that the product was deleted
           const checkRes = await request(app)

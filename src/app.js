@@ -4,9 +4,17 @@ console.log('Loading product routes...');
 const productRoutes = require('./routes/productRoute');
 console.log('Loading error handler...');
 const errorHandler = require('./middleware/errorHandler');
+const path = require('path');
+const apiCache = require('apicache');
 
 const app = express();
 app.use(express.json());
+
+let cache = apiCache.middleware;
+app.use(cache('5 minutes'));
+
+// Serve static files from the 'public' directory (or wherever your index.html is)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.use('/api/products', productRoutes);
@@ -14,9 +22,9 @@ app.use('/api/products', productRoutes);
 // Error handling middleware
 app.use(errorHandler);
 
-// Add a default route for Vercel
+// Add a default route
 app.get('/', (req, res) => {
-  res.send('Server is running');
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // Only start the server if we're not in Vercel
@@ -24,7 +32,7 @@ const PORT = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
   });
 }
 
