@@ -6,14 +6,16 @@ info:
   description: |
     A comprehensive API for managing a library system. Features include:
     - Book management (create, read, update, delete)
+    - User management and authentication
     - Book search and filtering
     - Checkout and return operations
+    - Borrowing history tracking
     - Pagination and sorting support
     - ISBN validation
     - Inventory tracking
   contact:
     name: Library API Support
-    email: support@library-api.com
+    email: jamiuabimbade@gmail.com
     
 servers:
   - url: http://localhost:3000/api/v1
@@ -24,6 +26,8 @@ servers:
 tags:
   - name: Books
     description: Book management operations
+  - name: Users
+    description: User management and profile operations
   - name: Search
     description: Search functionality
   - name: Operations
@@ -218,6 +222,19 @@ paths:
             type: integer
             format: int64
           description: Book ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  format: uuid
+                  example: "1411fb1d-6103-40ac-892f-2968f77a9e43"
+              required:
+                - userId
       responses:
         '200':
           description: Book checked out successfully
@@ -249,6 +266,19 @@ paths:
             type: integer
             format: int64
           description: Book ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  format: uuid
+                  example: "1411fb1d-6103-40ac-892f-2968f77a9e43"
+              required:
+                - userId
       responses:
         '200':
           description: Book returned successfully
@@ -262,6 +292,114 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  
+  /users/register:
+    post:
+      tags:
+        - Users
+      summary: Register a new user
+      description: Create a new user account in the system
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreated'
+        '409':
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailConflict'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /users/{userId}:
+    get:
+      tags:
+        - Users
+      summary: Get user profile
+      description: Retrieve user profile information
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: User ID
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /users/{userId}/history:
+    get:
+      tags:
+        - Users
+      summary: Get user borrowing history
+      description: Retrieve complete borrowing history for a user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: User ID
+      responses:
+        '200':
+          description: Borrowing history retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BorrowingHistoryResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /users/{userId}/current-borrowings:
+    get:
+      tags:
+        - Users
+      summary: Get user's current borrowings
+      description: Retrieve list of books currently borrowed by the user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: User ID
+      responses:
+        '200':
+          description: Current borrowings retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentBorrowingsResponse'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':

@@ -22,3 +22,29 @@ IdParam:
   schema:
     type: integer
   description: Book ID
+
+# New User-related parameters
+UserIdParam:
+  name: userId
+  in: path
+  required: true
+  schema:
+    type: string
+    format: uuid
+  description: User ID
+
+HistorySortingParams:
+  name: sort
+  in: query
+  schema:
+    type: string
+    enum: [checked_out_at, due_date, returned_at]
+  description: Field to sort borrowing history by
+
+HistoryFilterParams:
+  name: status
+  in: query
+  schema:
+    type: string
+    enum: [active, overdue, returned]
+  description: Filter borrowing history by status

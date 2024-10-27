@@ -209,3 +209,109 @@ CheckoutRecord:
       enum: [active, overdue, returned]
     book:
       $ref: '#/components/schemas/Book'
+
+# New User-related schemas
+User:
+  type: object
+  required:
+    - id
+    - name
+    - email
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Unique identifier for the user
+    name:
+      type: string
+      minLength: 2
+      maxLength: 100
+      description: User's full name
+    email:
+      type: string
+      format: email
+      description: User's email address
+    created_at:
+      type: string
+      format: date-time
+      description: Timestamp when the user was created
+
+UserInput:
+  type: object
+  required:
+    - name
+    - email
+    - password
+  properties:
+    name:
+      type: string
+      minLength: 2
+      maxLength: 100
+      description: User's full name
+    email:
+      type: string
+      format: email
+      description: User's email address
+    password:
+      type: string
+      minLength: 8
+      format: password
+      description: User's password (will be hashed)
+
+UserList:
+  type: object
+  properties:
+    success:
+      type: boolean
+      default: true
+    data:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+UserResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      default: true
+    data:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+
+CheckoutHistoryResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      default: true
+    data:
+      type: object
+      properties:
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckoutRecord'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+CurrentBorrowingsResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      default: true
+    data:
+      type: object
+      properties:
+        borrowings:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckoutRecord'

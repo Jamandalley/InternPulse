@@ -37,7 +37,9 @@ const loadSwaggerConfig = async (app) => {
         filter: true,
         showExtensions: true,
         showCommonExtensions: true,
-        tryItOutEnabled: true
+        tryItOutEnabled: true,
+        tagsSorter: 'alpha',
+        operationsSorter: 'alpha',
       }
     };
 

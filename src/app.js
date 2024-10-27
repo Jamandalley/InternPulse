@@ -1,10 +1,11 @@
 console.log('Loading express...');
 const express = require('express');
 
-console.log('Loading Path...')
+console.log('Loading Path...');
 const path = require('path');
+const cors = require('cors');
 
-console.log('Loading Swagger Configuration...')
+console.log('Loading Swagger Configuration...');
 const loadSwaggerConfig = require('./swagger/swagger.js');
 
 console.log('Loading library routes...');
@@ -14,7 +15,9 @@ console.log('Loading user routes...');
 const userRouter = require('./routes/userRoutes');
 
 const app = express();
+app.use(cors());
 app.use(express.json());
+
 
 // Initialize Swagger documentation
 loadSwaggerConfig(app)

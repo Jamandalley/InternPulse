@@ -55,3 +55,73 @@ Book:
                   status:
                     type: string
                     enum: [available, checked_out]
+
+# New User-related responses
+User:
+  description: User details
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          success:
+            type: boolean
+            default: true
+          data:
+            type: object
+            properties:
+              user:
+                $ref: '#/components/schemas/User'
+
+UserCreated:
+  description: User created successfully
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          success:
+            type: boolean
+            default: true
+          data:
+            type: object
+            properties:
+              user:
+                $ref: '#/components/schemas/User'
+          message:
+            type: string
+            example: User registered successfully
+
+EmailConflict:
+  description: Email already registered
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          success:
+            type: boolean
+            default: false
+          error:
+            type: object
+            properties:
+              code:
+                type: string
+                example: EMAIL_EXISTS
+              message:
+                type: string
+                example: Email address is already registered
+
+UserHistory:
+  description: User borrowing history
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/CheckoutHistoryResponse'
+
+CurrentBorrowings:
+  description: User's current borrowings
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/CurrentBorrowingsResponse'
