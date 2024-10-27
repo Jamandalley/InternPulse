@@ -1,0 +1,211 @@
+# schemas.yaml
+Book:
+  type: object
+  required:
+    - title
+    - author
+    - isbn
+    - publishedDate
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Unique identifier for the book
+    title:
+      type: string
+      minLength: 1
+      maxLength: 255
+      description: Title of the book
+    author:
+      type: string
+      minLength: 1
+      maxLength: 255
+      description: Author of the book
+    isbn:
+      type: string
+      pattern: '^[\d-]{10,17}$'
+      description: ISBN-10 or ISBN-13 of the book
+    publishedDate:
+      type: string
+      format: date
+      description: Publication date of the book
+    genre:
+      type: string
+      enum: [fiction, non-fiction, science, technology, history, biography, children, other]
+      description: Genre of the book
+    description:
+      type: string
+      maxLength: 2000
+      description: Brief description or summary of the book
+    status:
+      type: string
+      enum: [available, checked_out, reserved, maintenance]
+      default: available
+      description: Current status of the book
+    location:
+      type: string
+      description: Physical location or shelf number of the book
+    totalCopies:
+      type: integer
+      minimum: 1
+      default: 1
+      description: Total number of copies owned by the library
+    availableCopies:
+      type: integer
+      minimum: 0
+      description: Number of copies currently available
+    createdAt:
+      type: string
+      format: date-time
+      description: Timestamp when the book was added to the system
+    updatedAt:
+      type: string
+      format: date-time
+      description: Timestamp when the book was last updated
+
+BookInput:
+  type: object
+  required:
+    - title
+    - author
+    - isbn
+    - publishedDate
+  properties:
+    title:
+      type: string
+      minLength: 1
+      maxLength: 255
+    author:
+      type: string
+      minLength: 1
+      maxLength: 255
+    isbn:
+      type: string
+      pattern: '^[\d-]{10,17}$'
+    publishedDate:
+      type: string
+      format: date
+    genre:
+      type: string
+      enum: [fiction, non-fiction, science, technology, history, biography, children, other]
+    description:
+      type: string
+      maxLength: 2000
+    location:
+      type: string
+    totalCopies:
+      type: integer
+      minimum: 1
+      default: 1
+
+BookResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      default: true
+    data:
+      type: object
+      properties:
+        book:
+          $ref: '#/components/schemas/Book'
+
+BookList:
+  type: object
+  properties:
+    success:
+      type: boolean
+      default: true
+    data:
+      type: object
+      properties:
+        books:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+Pagination:
+  type: object
+  properties:
+    total:
+      type: integer
+      description: Total number of items
+    totalPages:
+      type: integer
+      description: Total number of pages
+    currentPage:
+      type: integer
+      description: Current page number
+    perPage:
+      type: integer
+      description: Number of items per page
+    hasNextPage:
+      type: boolean
+      description: Whether there is a next page
+    hasPrevPage:
+      type: boolean
+      description: Whether there is a previous page
+
+Error:
+  type: object
+  properties:
+    success:
+      type: boolean
+      default: false
+    error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+
+Success:
+  type: object
+  properties:
+    success:
+      type: boolean
+      default: true
+    message:
+      type: string
+      description: Success message
+
+CheckoutRecord:
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+    bookId:
+      type: string
+      format: uuid
+    userId:
+      type: string
+      format: uuid
+    checkedOutAt:
+      type: string
+      format: date-time
+    dueDate:
+      type: string
+      format: date-time
+    returnedAt:
+      type: string
+      format: date-time
+    status:
+      type: string
+      enum: [active, overdue, returned]
+    book:
+      $ref: '#/components/schemas/Book'

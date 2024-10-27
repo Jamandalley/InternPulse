@@ -1,0 +1,268 @@
+# swagger/index.yaml
+openapi: '3.0.0'
+info:
+  title: Library Management API
+  version: '1.0.0'
+  description: |
+    A comprehensive API for managing a library system. Features include:
+    - Book management (create, read, update, delete)
+    - Book search and filtering
+    - Checkout and return operations
+    - Pagination and sorting support
+    - ISBN validation
+    - Inventory tracking
+  contact:
+    name: Library API Support
+    email: support@library-api.com
+    
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Local development server
+  - url: https://api.library-system.com/v1
+    description: Production server
+
+tags:
+  - name: Books
+    description: Book management operations
+  - name: Search
+    description: Search functionality
+  - name: Operations
+    description: Book checkout and return operations
+
+paths:
+  /books:
+    get:
+      tags:
+        - Books
+      summary: Get all books
+      description: Retrieve books with pagination, sorting, and filtering options
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Items per page
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            enum: [title, author, publishedDate]
+          description: Sort field
+        - name: genre
+          in: query
+          schema:
+            type: string
+          description: Filter by genre
+        - name: author
+          in: query
+          schema:
+            type: string
+          description: Filter by author
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search term for title, author, or genre
+      responses:
+        '200':
+          description: Books retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookList'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    
+    post:
+      tags:
+        - Books
+      summary: Create a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookInput'
+      responses:
+        '201':
+          description: Book created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '409':
+          description: Duplicate ISBN
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /books/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Book ID
+    
+    get:
+      tags:
+        - Books
+      summary: Get book by ID
+      responses:
+        '200':
+          description: Book retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    put:
+      tags:
+        - Books
+      summary: Update book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookInput'
+      responses:
+        '200':
+          description: Book updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Duplicate ISBN
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    delete:
+      tags:
+        - Books
+      summary: Delete book
+      responses:
+        '200':
+          description: Book deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /books/search:
+    get:
+      tags:
+        - Search
+      summary: Search books
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query for title, ISBN, author, genre, or summary
+      responses:
+        '200':
+          description: Search completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookList'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /books/{id}/checkout:
+    post:
+      tags:
+        - Operations
+      summary: Checkout book
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Book ID
+      responses:
+        '200':
+          description: Book checked out successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        '400':
+          description: Book not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /books/{id}/return:
+    post:
+      tags:
+        - Operations
+      summary: Return book
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Book ID
+      responses:
+        '200':
+          description: Book returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        '400':
+          description: Cannot return book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'

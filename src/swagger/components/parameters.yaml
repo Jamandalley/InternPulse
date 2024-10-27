@@ -1,0 +1,24 @@
+PaginationParams:
+  name: page
+  in: query
+  schema:
+    type: integer
+    minimum: 1
+    default: 1
+  description: Page number for pagination
+
+SortingParams:
+  name: sort
+  in: query
+  schema:
+    type: string
+    enum: [title, author, date]
+  description: Field to sort by
+
+IdParam:
+  name: id
+  in: path
+  required: true
+  schema:
+    type: integer
+  description: Book ID
