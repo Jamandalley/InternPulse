@@ -315,13 +315,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserCreated'
+                $ref: '#/components/responses/UserCreated'
         '409':
           description: Email already registered
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmailConflict'
+                $ref: '#/components/responses/EmailConflict'
         '400':
           $ref: '#/components/responses/ValidationError'
         '500':
@@ -373,7 +373,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BorrowingHistoryResponse'
+                $ref: '#/components/schemas/CheckoutHistoryResponse'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
